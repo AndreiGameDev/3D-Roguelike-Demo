@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: e085567a4aa66ab48ac15686cf452e21
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - arenaGameobject: {fileID: 7072733306797760320, guid: 62a4515d31536c449bc19f53cc7374dd,
+      type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

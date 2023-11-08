@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7115300506397823762
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2089023599033255210}
+  - component: {fileID: 4350756582352018898}
+  m_Layer: 0
+  m_Name: Level Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2089023599033255210
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7115300506397823762}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 66.633865, y: 16.44552, z: -2.7803025}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4350756582352018898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7115300506397823762}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e085567a4aa66ab48ac15686cf452e21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  navMeshSurface: {fileID: 0}
+  terrainHolder: {fileID: 0}
+  arenaPrefabIterations:
+  - {fileID: 6885298662699342273, guid: 69dadc4abd3283946b6297eedad402c8, type: 3}
+  - {fileID: 730458185085322718, guid: 9e1265ee5f5f8944fb1b558e10667952, type: 3}
+  - {fileID: 4235289445884193157, guid: 57abb1afda6207f4e9d5ec33cc729b48, type: 3}
+  - {fileID: 2552459688710679306, guid: a5426da3c623e294a80f334b35c83deb, type: 3}
+  arena1PresetBeggining: {fileID: 4342992410567750053, guid: 56bf9549e2d9e28469f6c5122c62953e,
+    type: 3}
+  arena2PresetBeggining: {fileID: 2552459688710679306, guid: a5426da3c623e294a80f334b35c83deb,
+    type: 3}
+  arenaPresetPreventLoop:
+  - {fileID: 4235289445884193157, guid: 57abb1afda6207f4e9d5ec33cc729b48, type: 3}
+  - {fileID: 2552459688710679306, guid: a5426da3c623e294a80f334b35c83deb, type: 3}
+  - {fileID: 4342992410567750053, guid: 56bf9549e2d9e28469f6c5122c62953e, type: 3}
+  deadEndArena: {fileID: 7700115742670175882, guid: 741dae69916bd0a45b20e8dd8f9ff243,
+    type: 3}
+  terrainLayers:
+    serializedVersion: 2
+    m_Bits: 1
+  maxArenasToGenerate: 15
+  arena: []
+  spawnPoints: []
+  surplusArenas: []
