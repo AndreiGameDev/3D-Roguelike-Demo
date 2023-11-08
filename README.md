@@ -32,3 +32,5 @@ Biblography:
         Wizardus Maximus - free model by madtrollstudio (no date) Free 3D Model By madtrollstudio - Poly Pizza. Available at: https://poly.pizza/m/6oDxK0wqyL (Accessed: 08 November 2023). 
         Dynamite,Throwing Knife, hand model, gun, chest and crystals were all designed and created by me in blender.
         The rooms were also created by me with probuilder in unity.
+
+other github repo since I didn't know we had this github classroom: https://github.com/CraftyGam/3DRoguelikeUniProject/tree/main
