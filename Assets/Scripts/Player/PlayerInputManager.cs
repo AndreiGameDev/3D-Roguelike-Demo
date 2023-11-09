@@ -12,7 +12,6 @@ public class PlayerInputManager : MonoBehaviour {
             return _instance;
         }
     }
-
     PlayerControls playerControls;
     private void Awake() {
         if(_instance != null && _instance != this) {
@@ -43,9 +42,7 @@ public class PlayerInputManager : MonoBehaviour {
                 _instance.enabled = false;
             }
         }
-
     }
-
     private void OnEnable() {
         
         playerControls.Enable();
@@ -54,10 +51,10 @@ public class PlayerInputManager : MonoBehaviour {
         playerControls.Disable();
     }
     private void OnDestroy() {
-        // If we destroy this object, unsubscribe from the event
-        //SceneManager.activeSceneChanged -= OnSceneChange;
+        SceneManager.activeSceneChanged -= OnSceneChange;
     }
 
+    // Functions for grabbing input
     public Vector2 GetPlayerMovement() {
         return playerControls.Player.Movement.ReadValue<Vector2>();
     }

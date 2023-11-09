@@ -2,13 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerClass {
-
-}
 public class CharacterCameraController : MonoBehaviour {
     PlayerInputManager inputManager;
     [SerializeField] CharacterManager characterManager;
-
     [SerializeField] Camera headCamera;
     public float xSensitivity;
     public float ySensitivity;
@@ -20,6 +16,8 @@ public class CharacterCameraController : MonoBehaviour {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
+
+    // Moves camera
     void HandleCameraMovement() {
         if (characterManager.canLook) {
             float mouseX = inputManager.GetMouseDelta().x;

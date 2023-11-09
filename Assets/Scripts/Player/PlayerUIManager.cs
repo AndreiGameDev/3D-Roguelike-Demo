@@ -6,26 +6,30 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 public class PlayerUIManager : MonoBehaviour {
-    //Player camera reference for raycast
+    PlayerCombatManager playerCombatManager;
     [SerializeField] Camera fpsCamera;
-    //Player UI Elements references
     [SerializeField] UIDocument playerUI;
     public VisualElement rootUI;
+    // Tooltip components
     public VisualElement ve_Tooltip;
     public Label l_TooltipName;
     public Label l_TooltipDescription;
     Transform lastHitTooltipObject;
     public LayerMask tooltipLayer;
+    // Healthbar components
     public VisualElement Healthbar;
     public VisualElement ve_HPBarFill;
     public Label l_HPText;
-    PlayerCombatManager playerCombatManager;
+    // Crystal tab ui
     VisualElement itemsTab;
     public VisualTreeAsset crystalItemTemplate;
     bool isItemTabActive;
+    // Score components
     Label l_Score;
     int score;
-    private void Awake() { // Initialising UI elements and grabbing components
+
+    // Initialising UI elements and grabbing components
+    private void Awake() { 
         playerCombatManager = GetComponent<PlayerCombatManager>();
         playerUI = GetComponentInChildren<UIDocument>();
         rootUI = playerUI.rootVisualElement;
@@ -44,6 +48,8 @@ public class PlayerUIManager : MonoBehaviour {
         StartCoroutine(CrystalListUpdate());
         l_Score.text = "Score: 0";
     }
+
+    // Casts a ray that looks for transforms in the tooltip layer
     IEnumerator LookForTooltip() {
         RaycastHit[] hits = Physics.RaycastAll(fpsCamera.transform.position, fpsCamera.transform.forward, 5f, tooltipLayer, QueryTriggerInteraction.Collide);
         Array.Sort(hits, (hit1, hit2) => hit1.distance.CompareTo(hit2.distance));
@@ -67,25 +73,30 @@ public class PlayerUIManager : MonoBehaviour {
         StartCoroutine(LookForTooltip());
     }
 
+    // Sets tooltip
     public void SetTooltip(string name, string description) {
         l_TooltipName.text = name;
         l_TooltipDescription.text = description;
     }
 
+    // Fade in animation
     public void FadeIn() {
         ve_Tooltip.AddToClassList("opacityIn");
         ve_Tooltip.RemoveFromClassList("opacityOut");
     }
 
+    // Fade out Animation
     public void FadeOut() {
         ve_Tooltip.AddToClassList("opacityOut");
         ve_Tooltip.RemoveFromClassList("opacityIn");
     }
 
+    // Sets the UI Text component for HP
     public void setHPText() {
         l_HPText.text = "HP: " + Mathf.Clamp(playerCombatManager.health, 0, playerCombatManager.maxHealth) + " / " + playerCombatManager.maxHealth;
     }
 
+    // Sets the UI HP bar component according to the health %
     public void SetHPBar() {
         ve_HPBarFill.style.width = Length.Percent(Mathf.Clamp(playerCombatManager.health / playerCombatManager.maxHealth, 0, playerCombatManager.maxHealth) * 100);
     }
@@ -95,6 +106,7 @@ public class PlayerUIManager : MonoBehaviour {
         setHPText();
     }
 
+    // Toggles crystal tab visibility
     public void CrystalTabUi() {
 
         if (!isItemTabActive) {
@@ -106,7 +118,8 @@ public class PlayerUIManager : MonoBehaviour {
         }
     }
 
-    IEnumerator CrystalListUpdate() { // Adds crystals to the "ItemTabUI"
+    // Refreshed what crystals the player has currently collected for the crystal tab
+    IEnumerator CrystalListUpdate() {
         itemsTab.Clear();
         foreach (ItemList i in playerCombatManager.items) {
             TemplateContainer crystalItem = crystalItemTemplate.Instantiate();
@@ -124,6 +137,7 @@ public class PlayerUIManager : MonoBehaviour {
         StartCoroutine(CrystalListUpdate());
     }
 
+    // Increments score
     public void IncreaseScore(int AddToScore) {
         score += AddToScore;
         l_Score.text = "Score: " + score;

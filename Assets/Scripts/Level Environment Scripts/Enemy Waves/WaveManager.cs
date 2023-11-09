@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+// Amount of tiers available to choose from
 public enum waveTiers {
     Tier1,
     Tier2,
@@ -86,6 +88,7 @@ public class WaveManager : MonoBehaviour {
         chest = GameObject.FindWithTag("Chest").GetComponent<InteractChest>();
     }
 
+    // Player trigger to start the wave
     private void OnTriggerEnter(Collider other) {
         if (other.transform.CompareTag("Player")) {
             if (!isWaveCleared) {
@@ -96,6 +99,7 @@ public class WaveManager : MonoBehaviour {
         }
     }
 
+    // Checks if there is enemies left to spawn and if there is any left in the transform, if there isn't then it's cleared
     IEnumerator CheckIfWaveCleared() {
         yield return new WaitForSeconds(1f);
         if (enemyHolder.childCount == 0 && enemiesToKill <= 0) {
@@ -108,6 +112,7 @@ public class WaveManager : MonoBehaviour {
         }
     }
 
+   // Spawns enemies
     IEnumerator SpawnEnemy() {
         float maxSpawnRateTime;
         if (enemyHolder.childCount >= 3) {
@@ -117,7 +122,10 @@ public class WaveManager : MonoBehaviour {
         }
         yield return new WaitForSecondsRealtime(Random.Range(0, maxSpawnRateTime));
         Transform spawnpoint = spawnpoints[Random.Range(0, spawnpoints.Count)];
-        Instantiate(enemies[Random.Range(0, enemies.Length)], spawnpoint.position, spawnpoint.rotation);
+        GameObject enemyGO = Instantiate(enemies[Random.Range(0, enemies.Length)], spawnpoint.position, spawnpoint.rotation, enemyHolder);
+        AICombatManager enemyCombat = enemyGO.GetComponent<AICombatManager>();
+        enemyCombat.health *= enemyStrengthAmplifier;
+        enemyCombat.basePrimaryDamage *= enemyStrengthAmplifier;
         enemiesToKill--;
         if (enemiesToKill >= 0) {
             StartCoroutine(SpawnEnemy());

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ThrowProjectileReferenceAnim : MonoBehaviour
 {
+    //This script is only used as a reference for the animator keyevent
     AICombatManager aiManager;
 
     private void Start() {

@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class CharacterManager : MonoBehaviour
 {
+    // Variable manager
     public Animator armsAnimator;
     public Animator weaponAnimator;
     [HideInInspector] public CharacterController characterController;

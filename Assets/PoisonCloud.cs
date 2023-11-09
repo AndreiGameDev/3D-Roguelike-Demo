@@ -5,6 +5,7 @@ public class PoisonCloud : MonoBehaviour
 {
     [SerializeField] LayerMask enemy;
     
+    // When this function gets called, apply damage to targets within a radius of 3 from the player.
     public void CallItem( int damage, PlayerCombatManager player) {
         RaycastHit[] EnemiesAfflicted = Physics.SphereCastAll(transform.position, 3f, Vector3.forward, 3f, enemy, QueryTriggerInteraction.Collide);
         

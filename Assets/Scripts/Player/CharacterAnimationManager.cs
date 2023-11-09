@@ -9,14 +9,16 @@ public class CharacterAnimationManager : MonoBehaviour {
     private void Start() {
         character = GetComponent<CharacterManager>();
     }
-    public void PlayTargetActionAnimation(string targetArmsAnimation, string targetWeaponAnimation, bool isPerformingAction, float AnimatorSpeed = 1f,bool applyRootMotion = true, bool canRotate = true, bool canMove = true, bool canLook = true) {
-        /* Default settings when the command gets run >
-        string targetAnimation,
-        bool isPerformingAction,
-        bool applyRootMotion = true,
-        bool canRotate = false,
-        bool canMove = false
-        canLook = true */
+
+    // This function plays the animation for arms and the weapon, then sets variables and sets the animation speed.
+    public void PlayTargetActionAnimation(string targetArmsAnimation,
+                                            string targetWeaponAnimation,
+                                            bool isPerformingAction, 
+                                            float AnimatorSpeed = 1f,
+                                            bool applyRootMotion = true,
+                                            bool canRotate = true, 
+                                            bool canMove = true,
+                                            bool canLook = true) {
         character.armsAnimator.speed = 1;
         character.weaponAnimator.speed = 1;
         character.armsAnimator.applyRootMotion = applyRootMotion;

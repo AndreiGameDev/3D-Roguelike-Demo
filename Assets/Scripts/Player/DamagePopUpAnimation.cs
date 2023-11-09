@@ -21,6 +21,7 @@ public class DamagePopUpAnimation : MonoBehaviour
         origin = transform.position;
     }
 
+    // Animation going up then dissapearing
     private void Update() {
         transform.forward = cam.transform.forward;
         tmp.color = new Color(1,1,1, opacityCurve.Evaluate(time));
@@ -29,6 +30,7 @@ public class DamagePopUpAnimation : MonoBehaviour
         time += Time.deltaTime;
     }
 
+    // Animation scale based on crit or normal hit
      void scaleText() {
         if(hasCrit) {
             transform.localScale = Vector3.one * critScaleCurve.Evaluate(time);

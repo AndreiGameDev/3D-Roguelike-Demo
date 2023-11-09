@@ -18,6 +18,7 @@ public class MainMenuUI : MonoBehaviour
     Button b_Play;
     Button b_BackToMM;
     GameManager gameManager;
+
     private void Awake() {
         gameManager = GameManager.Instance;
         mainMenuUI = GetComponent<UIDocument>();
@@ -31,9 +32,11 @@ public class MainMenuUI : MonoBehaviour
         b_Hard = root.Q<Button>("B_Hard");
         b_BackToMM = root.Q<Button>("B_BackMM");
     }
+
     private void Start() {
         UnityEngine.Cursor.lockState = CursorLockMode.Confined;
         UnityEngine.Cursor.visible = true;
+
         b_PlaySettings.clicked += () => ShowDifficultyScreen();
         b_Quit.clicked += () => Application.Quit();
         b_Easy.clicked += () => EasyDifficulty();
@@ -42,7 +45,6 @@ public class MainMenuUI : MonoBehaviour
         b_BackToMM.clicked += () => ShowMainMenu();
     }
 
-    //https://github.com/mdotstrange/MdotsCustomPlaymakerActions/blob/master/KnockbackAction.cs
     void ShowDifficultyScreen() {
         ve_MainMenuButtons.style.display = DisplayStyle.None;
         ve_Difficulty.style.display = DisplayStyle.Flex;

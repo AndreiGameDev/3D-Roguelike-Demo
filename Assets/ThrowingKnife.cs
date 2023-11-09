@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class ThrowingKnife : MonoBehaviour {
     public PlayerCombatManager playerCombatManager;
+
+    //Auto destroy object
+    private void Start() {
+        Destroy(gameObject, 5f);
+    }
+
+    //When the objects collides with a trigger that is damagable then do damage
     private void OnTriggerEnter(Collider other) {
         if (other != null) {
             IDamagable damagable = other.transform.GetComponentInParent<IDamagable>();
@@ -16,10 +23,5 @@ public class ThrowingKnife : MonoBehaviour {
             }
         }
 
-    }
-    private void OnCollisionEnter(Collision collision) {
-        if (!collision.gameObject.layer.Equals(LayerMask.GetMask("Player"))) {
-            Destroy(transform.parent.gameObject);
-        }
     }
 }

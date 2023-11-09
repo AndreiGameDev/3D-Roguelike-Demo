@@ -13,11 +13,15 @@ public class BombScript : MonoBehaviour {
     private void Start() {
         StartCoroutine(Bomb());
     }
+
+    //Coroutine that acts as a timer
     public IEnumerator Bomb() {
         yield return new WaitForSeconds(durationToExplode);
         Explode();
         Destroy(transform.parent.gameObject);
     }
+
+    // Any enemy triggers within a radius of 3 will be damaged.
     void Explode() {
         RaycastHit[] ExplosionHits = Physics.SphereCastAll(transform.parent.position, 3f, Vector3.forward, 3f, LayerMask.GetMask("Enemy"), QueryTriggerInteraction.Collide);
         
@@ -39,6 +43,7 @@ public class BombScript : MonoBehaviour {
         }
     }
 
+    //Function to loop through parents until it finds the transform with a certain tag
     public static GameObject FindParentWithTag(GameObject childObject, string tag) {
         Transform t = childObject.transform;
         while (t.parent != null) {
@@ -47,6 +52,6 @@ public class BombScript : MonoBehaviour {
             }
             t = t.parent.transform;
         }
-        return null; // Could not find a parent with given tag.
+        return null; 
     }
 }
