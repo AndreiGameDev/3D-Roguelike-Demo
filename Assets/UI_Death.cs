@@ -11,9 +11,7 @@ public class UI_Death : MonoBehaviour {
     Button b_BackToMainMenu;
     Button b_Quit;
     Label l_Score;
-    GameManager manager;
     private void Start() {
-        manager = GameManager.Instance;
         UnityEngine.Cursor.lockState = CursorLockMode.Confined;
         UnityEngine.Cursor.visible = true;
 
@@ -28,7 +26,7 @@ public class UI_Death : MonoBehaviour {
         b_BackToMainMenu.clicked += () => SceneManager.LoadScene("MainMenuScene");
         b_Quit.clicked += () => Application.Quit();
 
-        l_Score.text = "Score: " + manager.Score.ToString();
         l_Score = root.Q<Label>("L_Score");
+        l_Score.text = "Score: " + GameManager.Instance.Score.ToString();
     }
 }

@@ -29,8 +29,10 @@ public class AINavigator : MonoBehaviour {
     public bool isInAttackRange() {
         float distance = Vector3.Distance(transform.position, targetTransform.position);
         if (distance <= OwnerAttackRange) {
+            Debug.Log("In attack range");
             return true;
         } else {
+            Debug.Log("Not in attack range");
             return false;
         }
     }

@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 public class SpawnNewTerrain : MonoBehaviour {
     [SerializeField] NavMeshSurface navMeshSurface;
     public GameObject terrainHolder;
-    // Arena prefab iterations and presets for scenarios such as the beggining generation
+    [Header("Arena stuff")]// Arena prefab iterations and presets for scenarios such as the beggining generation
     [SerializeField] GameObject[] arenaPrefabIterations;
     [SerializeField] GameObject arena1PresetBeggining, arena2PresetBeggining;
     [SerializeField] GameObject[] arenaPresetPreventLoop;

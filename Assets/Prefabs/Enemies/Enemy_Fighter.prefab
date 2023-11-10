@@ -2960,6 +2960,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b6267f6de27bc049a04be0d6cd658a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  combatManager: {fileID: 0}
+  isProjectile: 0
 --- !u!1 &6445291728774244034
 GameObject:
   m_ObjectHideFlags: 0
@@ -8408,7 +8410,7 @@ MonoBehaviour:
   isPerformingAction: 0
   canMove: 0
   isInAttackRange: 0
-  hasObjective: 1
+  targetPlayer: 1
 --- !u!114 &6549454138343532586
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8452,6 +8454,8 @@ MonoBehaviour:
   AttackRange: 0
   AIWeaponData: {fileID: 11400000, guid: a6c8a0ea258ff794fa4f5a42fde8cb03, type: 2}
   meleeHitbox: {fileID: 932492508082914672}
+  projectilePrefab: {fileID: 0}
+  projectileSpawnpoint: {fileID: 0}
 --- !u!114 &2625381137064681504
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8466,7 +8470,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   agent: {fileID: 0}
   TargetTag: Player
-  knockback: 0
 --- !u!195 &176432360046183639
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -8504,3 +8507,4 @@ MonoBehaviour:
   oneshot: {fileID: 0}
   navigator: {fileID: 0}
   currentState: {fileID: 4617449705516264279}
+  wizzard: 0

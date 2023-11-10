@@ -9,7 +9,7 @@ public class AICharacterManager : MonoBehaviour {
     public bool isPerformingAction;
     public bool canMove;
     public bool isInAttackRange;
-    public bool targetPlayer;
+    public bool targetPlayer = true;
 
     void Awake() {
         oneshot = GetComponent<AIAnimationPlayer>();

@@ -1186,7 +1186,7 @@ MonoBehaviour:
   isPerformingAction: 0
   canMove: 0
   isInAttackRange: 0
-  hasObjective: 1
+  targetPlayer: 1
 --- !u!114 &4338653396421879636
 MonoBehaviour:
   m_ObjectHideFlags: 0
