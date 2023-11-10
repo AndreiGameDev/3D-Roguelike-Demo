@@ -14,6 +14,8 @@ public class InteractChest : MonoBehaviour, IInteract
     void Awake() {
         animator = GetComponent<Animator>();
     }
+
+    // Opens the chest for the player then sets it to used
     public void Interact(PlayerCombatManager player = null) {
         
         if (canUse) {
@@ -22,12 +24,14 @@ public class InteractChest : MonoBehaviour, IInteract
         }
     }
 
+    // Animation timer until it automatically plays the close animation
     IEnumerator OpenChest() {
         animator.SetTrigger("Open");
         yield return new WaitForSeconds(10f);
         animator.SetTrigger("Close");
     }
 
+    // Spawns loot randomly
     public void SpawnLoot() {
         Instantiate(crystals[Random.Range(0, crystals.Count)], spawnPos1.position, spawnPos1.rotation);
         Instantiate(crystals[Random.Range(0, crystals.Count)], spawnPos2.position, spawnPos2.rotation);

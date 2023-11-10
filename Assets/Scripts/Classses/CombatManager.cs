@@ -4,7 +4,6 @@ using System.ComponentModel;
 using UnityEngine;
 
 public class CombatManager : MonoBehaviour, IDamagable {
-    [Header("Testing_References")] // remove when done verifying the core system work
     public CharacterStats characterStats;
     public WeaponData weaponData;
 
@@ -41,9 +40,8 @@ public class CombatManager : MonoBehaviour, IDamagable {
     public float armorAmplifier = 1f;
     public float healthAmplifier = 1f;
     public float critDamageAmplifier = 1.5f;
+
     public void Start() {
-        
-        Debug.Log("Initializing Stats");
         LoadBaseStats();
         LoadWeaponStats();
         baseMaxHealth = health;
@@ -51,12 +49,16 @@ public class CombatManager : MonoBehaviour, IDamagable {
         maxHealth = baseMaxHealth;
         maxShield = baseMaxShield;
     }
+    
+    // Amplifies stats
     public void AmplifyStats() {
         armor = baseArmor * armorAmplifier;
         movementSpeed = baseMovementSpeed * movementSpeedAmplifier;
         maxShield = baseMaxShield * shieldAmplifier;
         maxHealth = baseMaxHealth * armorAmplifier;
     }
+
+    // Checks if the hit component is a head or body
     bool IsHitHeadshot(string ColliderShot) {
         if (ColliderShot == "Head") {
             return true;
@@ -67,6 +69,8 @@ public class CombatManager : MonoBehaviour, IDamagable {
             return false;
         }
     }
+
+    // Calculates ability damage with multipliers
     public int AbilityDamageCalculate(float AbilityDamage, bool canHeadshot = false, string HitBodypartName = "") {
         if (canHeadshot) {
             if (IsHitHeadshot(HitBodypartName)) {
@@ -77,9 +81,9 @@ public class CombatManager : MonoBehaviour, IDamagable {
         } else {
             return Mathf.FloorToInt(AbilityDamage * abilityDamageAmplifier);
         }
-
     }
 
+    // Calculates basic attack damage with multipliers
     public int PrimaryDamageCalculate(float BaseDamage, bool canHeadshot = false, string HitBodypartName = "") {
         if (canHeadshot) {
             if (IsHitHeadshot(HitBodypartName)) {
@@ -93,10 +97,12 @@ public class CombatManager : MonoBehaviour, IDamagable {
 
     }
 
+    // Adds health and clamps it so it doesn't go above max health
     public void Heal(int healthToAdd) {
         health += healthToAdd;
         health = Mathf.Clamp(health, 0, maxHealth);
     }
+
     public virtual void LoadWeaponStats() {
         weaponName = weaponData.weaponName;
         weaponType = weaponData.weaponType;
@@ -114,20 +120,21 @@ public class CombatManager : MonoBehaviour, IDamagable {
         movementSpeed = baseMovementSpeed;
         shield = baseShield;
     }
+
+    // Does damage calculation subtracting shields and armors and if it's a player killing the target then do player specific functions
     public void doDamage(int dmgAmount, bool isPlayer, PlayerCombatManager player) {
         if (baseShield > 0) {
             baseShield -= dmgAmount;
-            // Check if there's still damage left after the shield is depleted
             if (baseShield < 0) {
                 float remainingDamage = Mathf.Abs(baseShield);
                 baseShield = 0;
-                // Deduct the remaining damage from the health
                 health -= remainingDamage;
             }
         } else {
-            // If the shield is already depleted, deduct damage directly from health
             health -= dmgAmount;
         }
+
+        // If the player kills this object do this
         if (isPlayer) {
             if (health <= 0) {
                 player.OnKillItemEffect();

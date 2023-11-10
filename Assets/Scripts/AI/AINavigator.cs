@@ -4,8 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class AINavigator : MonoBehaviour
-{
+public class AINavigator : MonoBehaviour {
     public NavMeshAgent agent;
     GameObject target;
     public string TargetTag = "";
@@ -19,10 +18,14 @@ public class AINavigator : MonoBehaviour
         OwnerAttackRange = GetComponent<AICombatManager>().AttackRange;
         agent.speed = GetComponent<AICombatManager>().movementSpeed;
     }
+
+    // Tells the agent it's moving and sets the destination to the player position
     public void Move() {
-            agent.isStopped = false;
-            agent.SetDestination(targetTransform.position);
+        agent.isStopped = false;
+        agent.SetDestination(targetTransform.position);
     }
+
+    // If it's in attack range then it's true
     public bool isInAttackRange() {
         float distance = Vector3.Distance(transform.position, targetTransform.position);
         if (distance <= OwnerAttackRange) {
@@ -32,10 +35,8 @@ public class AINavigator : MonoBehaviour
         }
     }
 
+    // Tells the agent it's not moving
     public void Stop() {
-            agent.isStopped = true;
-    }
-
-    private void Update() {
+        agent.isStopped = true;
     }
 }

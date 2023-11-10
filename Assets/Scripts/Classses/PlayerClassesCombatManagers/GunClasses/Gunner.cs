@@ -8,46 +8,34 @@ using UnityEngine;
 
 public class Gunner : PlayerCombatManager {
 
+    //Gun variables
     [SerializeField] GunWeaponData gunData;
-    public float fireRate;  // Rate of fire in seconds
-    float canFire;
-    public float maxBulletHitRange;  // Maximum distance for the raycast
-    public int maxTargetsPenetrate; // Maximum number of targets to hit
-
-    //string PrimaryAttackAnimation = "HandgunShoot";
-    //string SecondaryAttackAnimation = "HandGunTrippleShoot";
-
+    public float fireRate;
+    public float maxBulletHitRange;
+    public int maxTargetsPenetrate;
+    [SerializeField] LayerMask layersToHit;
+    [SerializeField] GameObject VFX_BloodSplatter;
+    // Primary attack animation name
     string PrimaryAttackAnimationArms = "A_Arm_Fire";
     string PrimaryAttackAnimationWeapon = "A_Glock_Fire";
-
-    //string ReloadAnimationArms = "A_Arm_Reload";
-    //string ReloadAnimationWeapon = "A_Glock_Reload";
-
-    //string SecondaryAttackAnimationArms;
-    //string SecondaryAttackAnimationWeapon;
-    [SerializeField] LayerMask layersToHit;
-
     [SerializeField] Recoil _recoil;
-
-    [SerializeField] GameObject grenadeGameObject;
-    [SerializeField] Transform projectileTransform;
-    [SerializeField] GameObject VFX_BloodSplatter;
-
+    // Ability 2
     [SerializeField] GameObject dynamitePrefab;
-    [SerializeField] GameObject throwingKnifePrefab;
-
-    [SerializeField] float cooldownAbility1 = 5f;
     [SerializeField] float cooldownAbility2 = 10f;
-    [SerializeField] float cooldownSecondaryAbility = 20f;
-    bool canUseAbility1 = true;
     bool canUseAbility2 = true;
+    // Ability 1
+    [SerializeField] float cooldownAbility1 = 5f;
+    bool canUseAbility1 = true;
+    [SerializeField] GameObject throwingKnifePrefab;
+    //Secondary Ability
+    [SerializeField] float cooldownSecondaryAbility = 20f;
     bool canUseSecondaryAbility = true;
+    [SerializeField] Transform projectileTransform;
     private new void Start() {
         base.Start();
         fireRate = gunData.fireRate;
         maxBulletHitRange = gunData.maxBulletHitRange;
         maxTargetsPenetrate = gunData.maxTargetsPenetrate;
-        StartCoroutine(canFireTimer());
         ability1Damage = 10;
         ability2Damage = 15;
 
@@ -56,42 +44,28 @@ public class Gunner : PlayerCombatManager {
         ability2Damage *= difficultyDamage;
     }
 
+    // Shots a raycast, if it collides and detects damagable objects then do damage.
     public void WeaponFire() {
-        Debug.Log("WeaponFire");
-        _recoil.recoil();
+        _recoil.RecoilLogic();
 
         RaycastHit[] hits = Physics.RaycastAll(fpsCamera.transform.position, fpsCamera.transform.forward, maxBulletHitRange, layersToHit, QueryTriggerInteraction.Collide);
-
-        // Sort the hits by distance from the ray's origin in ascending order
-        Array.Sort(hits, (hit1, hit2) => hit1.distance.CompareTo(hit2.distance));
-
+        Array.Sort(hits, (hit1, hit2) => hit1.distance.CompareTo(hit2.distance)); // Sort the hits by distance from the ray's origin in ascending order
         int penetratedTargets = 0; // Initialize a counter for penetrated targets
         Transform previousHitObject = null;
 
         foreach (RaycastHit hit in hits) {
-            // Debug checking what objects it hit
-            Debug.Log("Hit object: " + hit.collider.gameObject.name);
-
-
             Transform currentHitObject = hit.transform.root;
             if (previousHitObject != currentHitObject) {
-                // Grabs hit object and then grabs the damagable interface
                 GameObject hitObject = hit.transform.gameObject;
                 HitboxComponent hitbox = hitObject.GetComponent<HitboxComponent>();
                 IDamagable damagable = hitbox.parentIDamagable;
 
-                // If the object hit has the damagable interface then do logic
+                // If the object hit has the damagable interface then apply damage functions
                 if (damagable != null) {
-                    // Increase the variable which counts how many targets it penetrated so far
                     penetratedTargets++;
-                    Debug.Log("Damageable object hit, name is:" + hitObject.name);
-
-                    // Apply damage and then create the damage text
-
-                    //Grab hitbox component to check where the player hit
-                    Debug.Log("Damage is being done");
                     int dmgAmount = PrimaryDamageCalculate(basePrimaryDamage, true, hitbox.bodyPartString);
                     damagable.doDamage(dmgAmount, true, this);
+
                     if (hitbox.bodyPartString == "Head") {
                         CreateNumberPopUp(hitObject.transform.position, dmgAmount.ToString(), Color.yellow);
                     } else {
@@ -101,9 +75,7 @@ public class Gunner : PlayerCombatManager {
                     CreateBloodSplatter(hit);
                     previousHitObject = currentHitObject;
 
-                    // If we've hit the maximum number of targets, break out of the loop
                     if (penetratedTargets >= maxTargetsPenetrate) {
-                        Debug.Log("Reached max penetrated targets, breaking out of loop");
                         break;
                     }
                 } else {
@@ -111,11 +83,10 @@ public class Gunner : PlayerCombatManager {
                     continue;
                 }
             }
-
-
         }
     }
 
+    // Create bloodsplatter at hit position
     void CreateBloodSplatter(RaycastHit hit) {
         Vector3 incomingVector = hit.point - transform.root.position;
         Vector3 reflectVector = Vector3.Reflect(incomingVector, hit.normal);
@@ -123,25 +94,20 @@ public class Gunner : PlayerCombatManager {
         GameObject temp = Instantiate(VFX_BloodSplatter, hit.point, Quaternion.Euler(reflectVector));
         GameObject.Destroy(temp, 1f);
     }
-    IEnumerator canFireTimer() {
-        canFire += Time.deltaTime;
-        yield return new WaitForEndOfFrame();
-        StartCoroutine(canFireTimer());
-    }
+
+    // Plays primary attack animation, the animation has the weapon damage function
     public override void PrimaryAttackLogic() {
-        // Primary Attack Logic
-        if (canFire > fireRate / attackSpeedAmplifier) {
-            canFire = 0f;
-            animator.PlayTargetActionAnimation(PrimaryAttackAnimationArms, PrimaryAttackAnimationWeapon, true, attackSpeedAmplifier);
-        }
+        animator.PlayTargetActionAnimation(PrimaryAttackAnimationArms, PrimaryAttackAnimationWeapon, true, attackSpeedAmplifier);
     }
 
+    // Starts coroutine for secondary attack
     public override void SecondaryAttackLogic() {
         if (canUseSecondaryAbility) {
             StartCoroutine(SecondAttackAction());
         }
     }
 
+    // Ability 1 logic - throws a throwing knife where the player's crosshair is aiming at
     public override void Abillity1Logic() {
         if (canUseAbility1) {
             canUseAbility1 = false;
@@ -149,10 +115,10 @@ public class Gunner : PlayerCombatManager {
             GameObject throwKnife = Instantiate(throwingKnifePrefab, fpsCamera.transform.position, fpsCamera.transform.rotation);
             ThrowingKnife throwKnifeScript = throwKnife.GetComponentInChildren<ThrowingKnife>();
             throwKnifeScript.playerCombatManager = this;
-            // First Abilitty Logic
         }
     }
 
+    // Ability 2 logic - throws a dynamite where the player's crosshair is aiming at
     public override void Abillity2Logic() {
         if (canUseAbility2) {
             canUseAbility2 = false;
@@ -160,11 +126,10 @@ public class Gunner : PlayerCombatManager {
             GameObject dynamite = Instantiate(dynamitePrefab, fpsCamera.transform.position, fpsCamera.transform.rotation);
             BombScript dynamiteScript = dynamite.GetComponentInChildren<BombScript>();
             dynamiteScript.playerCombatManager = this;
-            // Second Abillity logic
         }
-
     }
-    //Cooldowns
+
+    //Cooldown logic lines 133-163, It decreases by 1s until it reaches 0 then sets the variable to true and resets the cd
     IEnumerator CooldownAbility1() {
         yield return new WaitForSecondsRealtime(1f);
         cooldownAbility1 -= 1f;
@@ -185,6 +150,7 @@ public class Gunner : PlayerCombatManager {
             canUseAbility2 = true;
         }
     }
+
     IEnumerator CooldownAbilitySecondaryAbility() {
         yield return new WaitForSecondsRealtime(1f);
         cooldownSecondaryAbility -= 1f;
@@ -195,6 +161,8 @@ public class Gunner : PlayerCombatManager {
             cooldownSecondaryAbility = 20f;
         }
     }
+
+    // Secondary attack coroutine, this boosts the player's stats for 5seconds then reverts back to normal
     IEnumerator SecondAttackAction() {
         canUseSecondaryAbility = false;
         StartCoroutine(CooldownAbilitySecondaryAbility());

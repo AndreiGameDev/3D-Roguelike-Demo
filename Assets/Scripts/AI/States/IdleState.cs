@@ -6,6 +6,7 @@ using UnityEngine;
 public class IdleState : State {
     public ChaseState chaseState;
     public AttackState attackState;
+
     public override State RunCurrentState() {
         if (navigator.isInAttackRange()) {
             return attackState;
@@ -14,7 +15,5 @@ public class IdleState : State {
         } else {
             return this;
         }
-        
-
     }
 }

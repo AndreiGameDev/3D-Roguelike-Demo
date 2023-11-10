@@ -21,7 +21,7 @@ public class PlayerCombatManager : CombatManager {
     public float ability2Damage;
     public float difficultyDamage;
 
-    private void Awake() { // Initialising variables and references
+    private void Awake() {
         difficultyDamage = GameManager.Instance.difficultyAmplify;
         inputManager = PlayerInputManager.Instance;
         characterManager = GetComponent<CharacterManager>();
@@ -30,7 +30,7 @@ public class PlayerCombatManager : CombatManager {
         damageNumberPrefab = (GameObject)Resources.Load("Prefabs/DamageNumber", typeof(GameObject));
         GameManager.Instance.isInWave = false;
     }
-    public new void Start() { // Initialise stats and coroutines
+    public new void Start() {
         base.Start();
         GameManager.Instance.Score = 0;
         StartCoroutine(CallItemUpdate());
@@ -49,13 +49,15 @@ public class PlayerCombatManager : CombatManager {
         Die();
     }
 
+    // Toggles crystal tab ui (tab key)
     private void ItemTabToggle() {
         if (inputManager.hasPlayerCheckedItemsTab()) {
             UIManager.CrystalTabUi();
         }
     }
 
-    void HandleAllAttacks() { // Handle inputs and respond with attacks
+    // Handles input resposes
+    void HandleAllAttacks() { 
         //Primary Attack
         if (inputManager.hasPrimaryFireTriggered()) {
             PrimaryAttack();
@@ -74,6 +76,8 @@ public class PlayerCombatManager : CombatManager {
         }
 
     }
+
+    // All the functions 80-117 lines are just the functions for each ability named and checked whether the player is already doing an input and the attack logic being defined
     public void PrimaryAttack() {
         if (!characterManager.isPerformingAction) {
             PrimaryAttackLogic();
@@ -112,16 +116,17 @@ public class PlayerCombatManager : CombatManager {
         // Second Abillity logic
     }
 
+
+    // Create damage number popup when hitting enemies
     public void CreateNumberPopUp(Vector3 position, string text, Color color) {
         var popup = Instantiate(damageNumberPrefab, position + Vector3.up, quaternion.identity);
         var temp = popup.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
         temp.text = text;
         temp.faceColor = color;
-
-        //Destroy Timer
         Destroy(popup, 1f);
-
     }
+
+    // Shoots a raycast to check for objects that are interactable
     void Interact() {
         if (inputManager.hasPlayerInteracted()) {
             RaycastHit[] hits = Physics.RaycastAll(fpsCamera.transform.position, fpsCamera.transform.forward, 20f, LayerMask.GetMask("Tooltip") | LayerMask.GetMask("Default"), QueryTriggerInteraction.Collide);
@@ -141,7 +146,9 @@ public class PlayerCombatManager : CombatManager {
         }
     }
 
-    // Item related code
+    // Item related code from line 149-181
+
+    // Calls Item Updates every 1 second
     IEnumerator CallItemUpdate() {
         foreach (ItemList i in items) {
             i.item.Update(this, i.stacks);
@@ -150,6 +157,7 @@ public class PlayerCombatManager : CombatManager {
         StartCoroutine(CallItemUpdate());
     }
 
+    // Call DOT items every second
     IEnumerator CallDamageOvertimeItem() {
         foreach (ItemList i in items) {
             i.item.OnPeriodicItemEvent(this, i.stacks);
@@ -158,17 +166,21 @@ public class PlayerCombatManager : CombatManager {
         StartCoroutine(CallDamageOvertimeItem());
     }
 
+    // Calls On kill item effects function
     public void OnKillItemEffect() {
         foreach (ItemList i in items) {
             i.item.OnKill(this, i.stacks);
         }
     }
 
+    // Creates gameobjects(VFX) under vfx holder
     public void CallItemVFX() {
         foreach (ItemList i in items) {
             i.item.CreateVFX(VFXHolder);
         }
     }
+
+    // When the player dies load the death scene
     void Die() {
         if(health <= 0) {
             SceneManager.LoadScene("DeathScene");

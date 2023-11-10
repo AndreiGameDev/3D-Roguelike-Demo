@@ -20,9 +20,11 @@ public class StateManager : MonoBehaviour {
         character = GetComponent<AICharacterManager>();
         combatManager = GetComponentInParent<AICombatManager>();
     }
+
+    // If the character has to target the player, switch between the idle,chase and attack state
     void Update()
     {
-        if (character.hasObjective) {
+        if (character.targetPlayer) {
             RunStateMachine();
         }
         switch(currentState) {
@@ -39,14 +41,20 @@ public class StateManager : MonoBehaviour {
                 break;
         }
     }
+
+    // Tells the navigator to stop and plays the idle animation
     void Idle() {
         navigator.Stop();
         character.animator.SetBool("isMoving", false);
     }
+
+    // Tells the navigator to move and plays the chase animation
     void Chase() {
         navigator.Move();
         character.animator.SetBool("isMoving", true);
     }
+
+    // Tells the navigator to stop and plays the attack animation, if it's a wizzard then it also looks at the target
     void Attack() {
         navigator.Stop();
         if (wizzard) {
@@ -57,6 +65,8 @@ public class StateManager : MonoBehaviour {
         }
           
     }
+
+    // Swapping states logic
     void RunStateMachine() {
         State nextState = currentState?.RunCurrentState();
 
@@ -65,14 +75,15 @@ public class StateManager : MonoBehaviour {
         }
     }
 
+    // Switches to next state logic
     void SwitchToTheNextState(State nextState) {
         currentState.enabled = false;
         nextState.enabled = true;
         currentState = nextState;
-        
     }
 }
 
+// States
 enum States {
     IdleState,
     ChaseState,

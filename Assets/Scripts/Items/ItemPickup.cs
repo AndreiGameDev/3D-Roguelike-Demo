@@ -8,14 +8,14 @@ public class ItemPickup : MonoBehaviour, IInteract, ITooltip {
     public Items itemDrop;
     public ItemInteractionType itemType;
     private void Start() {
-        // Depending on the item from the enumerator selected assigned the variable Item to values of the actual item
         item = AssignItem(itemDrop);
-        
     }
 
+    // Grabs tooltip information for the player to see
     public void Tooltip(PlayerUIManager player) {
         player.SetTooltip(item.GiveName(), item.GiveDescription());
     }
+    // Adds the item to the player and destroys the gameobject after
     public void Interact(PlayerCombatManager player) {
         Debug.Log("Crystal Interaction");
         if (player != null) {
@@ -33,6 +33,8 @@ public class ItemPickup : MonoBehaviour, IInteract, ITooltip {
             Destroy(this.gameObject);
         }
     }
+
+    // Adds the item to the player logic
     void AddItem(PlayerCombatManager player) {
         foreach(ItemList i in player.items) {
             if (i.name == item.GiveName()) {
@@ -74,6 +76,7 @@ public enum Items {
     RejuvenateCrystal
 }
 
+// Interaction type that the crystal does related to the player
 public enum ItemInteractionType {
     Nothing,
     ChangesStats,
