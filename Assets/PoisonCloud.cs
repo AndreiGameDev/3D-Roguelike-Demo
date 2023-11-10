@@ -16,8 +16,7 @@ public class PoisonCloud : MonoBehaviour
                     damagable.doDamage(damage, true, player);
                     player.CreateNumberPopUp(enemy.transform.position, damage.ToString(), Color.magenta);
                 }
-            }
-                
+            }  
         }
     }
 }

@@ -45,7 +45,6 @@ public class HealingCrystal : Item {
             player.Heal(5 * stacks);
             cooldown = 5;
         }
-
     }
 }
 
