@@ -22,6 +22,5 @@ public class ThrowingKnife : MonoBehaviour {
                 Destroy(transform.parent.gameObject);
             }
         }
-
     }
 }

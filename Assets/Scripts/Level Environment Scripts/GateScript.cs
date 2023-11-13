@@ -45,6 +45,5 @@ public class GateScript : MonoBehaviour, IInteract {
             animator.SetBool("Interacted", true);
             doorOpen();
         }
-
     }
 }

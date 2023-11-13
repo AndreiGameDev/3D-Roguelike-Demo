@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class AICombatManager : CombatManager
-{
+public class AICombatManager : CombatManager {
     [SerializeField] public float AttackRange;
     [SerializeField] AIWeaponData AIWeaponData;
     [SerializeField] public WeaponHitboxComponent meleeHitbox = null;
@@ -18,13 +17,13 @@ public class AICombatManager : CombatManager
         AttackRange = AIWeaponData.attackRange;
         basePrimaryDamage = AIWeaponData.baseDamage;
     }
-    
+
     // Toggle weapon hitbox ( For melee AIs) when attacking
     public void ToggleHitbox() {
-        if(isMeleeHitboxActive) {
+        if (isMeleeHitboxActive) {
             isMeleeHitboxActive = false;
             meleeHitbox.enabled = false;
-        }else if(!isMeleeHitboxActive){
+        } else if (!isMeleeHitboxActive) {
             isMeleeHitboxActive = true;
             meleeHitbox.enabled = true;
         }
@@ -46,7 +45,7 @@ public class AICombatManager : CombatManager
     // Spawns projectiles(used in wizzard)
     public void SpawnProjectile() {
         GameObject player = GameObject.FindWithTag("Player");
-        GameObject projectile = Instantiate(projectilePrefab, projectileSpawnpoint.position, Quaternion.LookRotation(player.transform.position - projectileSpawnpoint.transform.position) );
+        GameObject projectile = Instantiate(projectilePrefab, projectileSpawnpoint.position, Quaternion.LookRotation(player.transform.position - projectileSpawnpoint.transform.position));
         WeaponHitboxComponent projectileScript = projectile.GetComponent<WeaponHitboxComponent>();
         projectileScript.combatManager = this;
     }
