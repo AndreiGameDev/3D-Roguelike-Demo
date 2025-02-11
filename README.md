@@ -35,5 +35,4 @@ References:
         Dynamite,Throwing Knife, hand model, gun, chest and crystals were all designed and created by me in blender.
         The rooms were also created by me with probuilder in unity.
 
-
-Main github used since I didn't know about github classroom: https://github.com/CraftyGam/3DRoguelikeUniProject/tree/main
+50 commits got killed because I toyed around with git..
