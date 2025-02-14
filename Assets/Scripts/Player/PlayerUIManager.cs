@@ -27,6 +27,10 @@ public class PlayerUIManager : MonoBehaviour {
     // Score components
     Label l_Score;
     int score;
+    //Cooldown Tracker(Gunner Only)
+    Label lSecondaryAttack;
+    Label lSkillTwo;
+    Label lSkillThree;
 
     // Initialising UI elements and grabbing components
     private void Awake() { 
@@ -41,6 +45,10 @@ public class PlayerUIManager : MonoBehaviour {
         l_HPText = Healthbar.Q<Label>("L_HP");
         itemsTab = rootUI.Q<VisualElement>("ItemsTab");
         l_Score = rootUI.Q<Label>("L_Score");
+
+        lSecondaryAttack = rootUI.Q<Label>("lSecondaryAttack");
+        lSkillTwo = rootUI.Q<Label>("lSkillTwo");
+        lSkillThree = rootUI.Q<Label>("lSkillThree");
     }
     private void Start() {
 
@@ -48,7 +56,18 @@ public class PlayerUIManager : MonoBehaviour {
         StartCoroutine(CrystalListUpdate());
         l_Score.text = "Score: 0";
     }
+    
+    public void ChangeSecondaryAttackText(string text) {
+        lSecondaryAttack.text = text;
+    }
 
+    public void ChangeSkillTwoText(string text) {
+    lSkillTwo.text = text;
+    }
+
+    public void ChangeSkillThreeText(string text) {
+    lSkillThree.text = text;
+    }
     // Casts a ray that looks for transforms in the tooltip layer
     IEnumerator LookForTooltip() {
         RaycastHit[] hits = Physics.RaycastAll(fpsCamera.transform.position, fpsCamera.transform.forward, 5f, tooltipLayer, QueryTriggerInteraction.Collide);

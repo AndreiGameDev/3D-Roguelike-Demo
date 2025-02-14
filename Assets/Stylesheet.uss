@@ -35,3 +35,9 @@
     align-items: center;
     align-self: center;
 }
+
+.unity-button:hover {
+    scale: 1.1 1.1;
+    transition-property: scale;
+    transition-duration: 0.25s;
+}

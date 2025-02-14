@@ -28,7 +28,7 @@ public class CharacterCameraController : MonoBehaviour {
             transform.root.Rotate(Vector3.up * (mouseX * Time.deltaTime) * xSensitivity);
         }
     }
-    private void LateUpdate() {
+    private void Update() {
         HandleCameraMovement();
     }
 

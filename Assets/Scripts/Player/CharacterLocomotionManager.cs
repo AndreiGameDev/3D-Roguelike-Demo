@@ -20,7 +20,7 @@ public class CharacterLocomotionManager : MonoBehaviour {
         combatManager = GetComponent<PlayerCombatManager>();
     }
 
-    private void FixedUpdate() {
+    private void Update() {
         isMoving();
         HandleGroundedMovement();
         Jump();

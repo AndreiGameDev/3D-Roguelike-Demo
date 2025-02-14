@@ -31,6 +31,7 @@ public class Gunner : PlayerCombatManager {
     [SerializeField] float cooldownSecondaryAbility = 20f;
     bool canUseSecondaryAbility = true;
     [SerializeField] Transform projectileTransform;
+
     private new void Start() {
         base.Start();
         fireRate = gunData.fireRate;
@@ -112,7 +113,8 @@ public class Gunner : PlayerCombatManager {
         if (canUseAbility1) {
             canUseAbility1 = false;
             StartCoroutine(CooldownAbility1());
-            GameObject throwKnife = Instantiate(throwingKnifePrefab, fpsCamera.transform.position, fpsCamera.transform.rotation);
+			UIManager.ChangeSkillTwoText(cooldownAbility1.ToString());
+			GameObject throwKnife = Instantiate(throwingKnifePrefab, fpsCamera.transform.position, fpsCamera.transform.rotation);
             ThrowingKnife throwKnifeScript = throwKnife.GetComponentInChildren<ThrowingKnife>();
             throwKnifeScript.playerCombatManager = this;
         }
@@ -123,7 +125,8 @@ public class Gunner : PlayerCombatManager {
         if (canUseAbility2) {
             canUseAbility2 = false;
             StartCoroutine(CooldownAbility2());
-            GameObject dynamite = Instantiate(dynamitePrefab, fpsCamera.transform.position, fpsCamera.transform.rotation);
+			UIManager.ChangeSkillThreeText(cooldownAbility2.ToString());
+			GameObject dynamite = Instantiate(dynamitePrefab, fpsCamera.transform.position, fpsCamera.transform.rotation);
             BombScript dynamiteScript = dynamite.GetComponentInChildren<BombScript>();
             dynamiteScript.playerCombatManager = this;
         }
@@ -133,40 +136,47 @@ public class Gunner : PlayerCombatManager {
     IEnumerator CooldownAbility1() {
         yield return new WaitForSecondsRealtime(1f);
         cooldownAbility1 -= 1f;
+        UIManager.ChangeSkillTwoText(cooldownAbility1.ToString());
         if (cooldownAbility1 >= 0) {
             StartCoroutine(CooldownAbility1());
         } else {
             cooldownAbility1 = 5f;
             canUseAbility1 = true;
-        }
-    }
+			UIManager.ChangeSkillTwoText("Q");
+		}
+	}
     IEnumerator CooldownAbility2() {
         yield return new WaitForSecondsRealtime(1f);
         cooldownAbility2 -= 1f;
+        UIManager.ChangeSkillThreeText(cooldownAbility2.ToString());
         if (cooldownAbility2 >= 0) {
             StartCoroutine(CooldownAbility2());
         } else {
             cooldownAbility2 = 10f;
             canUseAbility2 = true;
-        }
-    }
+			UIManager.ChangeSkillThreeText("E");
+		}
+	}
 
     IEnumerator CooldownAbilitySecondaryAbility() {
         yield return new WaitForSecondsRealtime(1f);
         cooldownSecondaryAbility -= 1f;
-        if (cooldownSecondaryAbility >= 0) {
+		UIManager.ChangeSecondaryAttackText(cooldownSecondaryAbility.ToString());
+		if(cooldownSecondaryAbility >= 0) {
             StartCoroutine(CooldownAbilitySecondaryAbility());
         } else {
             canUseSecondaryAbility = true;
             cooldownSecondaryAbility = 20f;
-        }
-    }
+			UIManager.ChangeSecondaryAttackText("RMB");
+		}
+	}
 
     // Secondary attack coroutine, this boosts the player's stats for 5seconds then reverts back to normal
     IEnumerator SecondAttackAction() {
         canUseSecondaryAbility = false;
         StartCoroutine(CooldownAbilitySecondaryAbility());
-        attackSpeedAmplifier += .5f;
+		UIManager.ChangeSecondaryAttackText(cooldownSecondaryAbility.ToString());
+		attackSpeedAmplifier += .5f;
         movementSpeed += .5f;
         abilityDamageAmplifier += .5f;
         primaryDamageAmplifier += .5f;
